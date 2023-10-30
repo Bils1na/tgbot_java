@@ -1,19 +1,25 @@
 package org.example;
 
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
-import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+
+import java.util.ArrayList;
 
 public class Bot extends TelegramLongPollingBot {
     private final String BOT_TOKEN = "6541493813:AAHBa1UqjKh51UabBbvkFWGkYWKP2L8SKj4";
     private final String BOT_NAME = "DocTur";
     Storage storage;
+    ReplyKeyboardMarkup replyKeyboardMarkup;
 
     Bot(){
         storage = new Storage();
+        initKeyboard();
     }
 
     @Override
@@ -42,6 +48,7 @@ public class Bot extends TelegramLongPollingBot {
                 //Добавляем в наше сообщение id чата а также наш ответ
                 answer.setChatId(chatId);
                 answer.setText(response);
+                answer.setReplyMarkup(replyKeyboardMarkup);
 
                 //Отправка в чат
                 execute(answer);
@@ -56,13 +63,30 @@ public class Bot extends TelegramLongPollingBot {
 
         //Сравниваем текст пользователя с нашими командами, на основе этого формируем ответ
         if (text.equals("/start")) {
-            response = "Hello Vitalik cocet xyu";
-        } else if (text.equals("/get")) {
+            response = "Я Доктур ЗубБот";
+        } else if (text.equals("/get") || text.equals("Просвяти")) {
             response = storage.getRandQuote();
         } else {
             response = "Error";
         }
 
         return response;
+    }
+
+    void initKeyboard(){
+        //Создаем объект будущей клавиатуры и выставляем нужные настройки
+        replyKeyboardMarkup = new ReplyKeyboardMarkup();
+        replyKeyboardMarkup.setResizeKeyboard(true); // подгоняем размер
+        replyKeyboardMarkup.setOneTimeKeyboard(false); //скрываем после использования
+
+        // Создаем список с рядами кнопок
+        ArrayList<KeyboardRow> keyboardRows = new ArrayList<>();
+        // Создаем один ряд кнопок и добавляем его в список
+        KeyboardRow keyboardRow = new KeyboardRow();
+        keyboardRows.add(keyboardRow);
+        //Добавляем одну кнопку с текстом "Просвяти" наш ряд
+        keyboardRow.add(new KeyboardButton("Просвяти"));
+        //добавляем лист с одним рядом кнопок в главный объект
+        replyKeyboardMarkup.setKeyboard(keyboardRows);
     }
 }

@@ -6,9 +6,9 @@ public class Storage {
     private ArrayList<String> quoteList;
     Storage(){
         quoteList = new ArrayList<>();
-        quoteList.add("Hello");
-        quoteList.add("World");
-        quoteList.add("!");
+        quoteList.add("Ямиля");
+        quoteList.add("Чуханян");
+        quoteList.add("Чуханян");
     }
 
     String getRandQuote() {

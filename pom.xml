@@ -4,9 +4,6 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <name>tg_bot</name>
-    <url>http://job4j.ru/</url>
-
     <groupId>org.example</groupId>
     <artifactId>DocturZubBot</artifactId>
     <version>1.0-SNAPSHOT</version>
