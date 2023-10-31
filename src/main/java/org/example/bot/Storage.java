@@ -1,4 +1,4 @@
-package org.example;
+package org.example.bot;
 
 import java.util.ArrayList;
 
