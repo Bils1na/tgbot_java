@@ -9,8 +9,9 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 public class Bot extends TelegramLongPollingBot {
     private final ConfigBot config;
-    Storage storage;
-    Menu menu;
+    private Storage storage;
+    private Menu menu;
+    private SendMessage answer;
 
 
     public Bot(){
@@ -36,19 +37,13 @@ public class Bot extends TelegramLongPollingBot {
     public void onUpdateReceived(Update update) {
         try {
             if (update.hasMessage() && update.getMessage().hasText()) {
-                //Извлекаем из объекта сообщение пользователя
                 Message msg = update.getMessage();
-                //Достаем из msg id чата пользователя
                 String chatId = msg.getChatId().toString();
-                //Создаем объект класса SendMessage - наш будущий ответ пользователю
-                SendMessage answer = new SendMessage();
-                parseMessage(msg.getText(), answer);
+                answer = new SendMessage();
+                parseMessage(msg.getText());
 
-                //Добавляем в наше сообщение id чата а также наш ответ
                 answer.setChatId(chatId);
 
-
-                //Отправка в чат
                 execute(answer);
             }
         } catch (TelegramApiException e) {
@@ -56,10 +51,7 @@ public class Bot extends TelegramLongPollingBot {
         }
     }
 
-    private void parseMessage(String text, SendMessage answer) {
-        String response;
-
-        //Сравниваем текст пользователя с нашими командами, на основе этого формируем ответ
+    private void parseMessage(String text) {
         if (text.equals("/menu")) {
              answer.setText(menu.getMessage());
              answer.setReplyMarkup(menu.getInlineKeyboardMarkup());
@@ -67,7 +59,7 @@ public class Bot extends TelegramLongPollingBot {
             answer.setText(menu.getMessage());
             answer.setReplyMarkup(menu.getInlineKeyboardMarkup());
         } else {
-             answer.setText("Error");
+            answer.setText("Error");
             answer.setReplyMarkup(config.replyKeyboardMarkup);
         }
     }
