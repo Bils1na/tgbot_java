@@ -12,6 +12,7 @@ public class Bot extends TelegramLongPollingBot {
     private Storage storage;
     private Menu menu;
     private SendMessage answer;
+    private Keyboard keyboards;
 
 
     public Bot(){
@@ -21,6 +22,7 @@ public class Bot extends TelegramLongPollingBot {
         );
         storage = new Storage();
         menu = new Menu();
+        keyboards = new Keyboard();
     }
 
     @Override
@@ -54,10 +56,10 @@ public class Bot extends TelegramLongPollingBot {
     private void parseMessage(String text) {
         if (text.equals("/menu")) {
              answer.setText(menu.getMessage());
-             answer.setReplyMarkup(menu.getInlineKeyboardMarkup());
+             answer.setReplyMarkup(keyboards.getChatButtons());
         }   else if (text.equals("Вызвать меню")){
             answer.setText(menu.getMessage());
-            answer.setReplyMarkup(menu.getInlineKeyboardMarkup());
+            answer.setReplyMarkup(keyboards.getMessageButtons);
         } else {
             answer.setText("Error");
             answer.setReplyMarkup(config.replyKeyboardMarkup);
