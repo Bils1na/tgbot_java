@@ -40,11 +40,9 @@ public class Keyboard {
         messageButtons = new InlineKeyboardMarkup();
 
         List<List<InlineKeyboardButton>> buttons = new ArrayList<>();
-
         InlineKeyboardButton button = new InlineKeyboardButton();
         button.setText("Рекомендации");
         button.setCallbackData("Вызывает рекомендацию");
-
         ArrayList<InlineKeyboardButton> row = new ArrayList<>();
         row.add(button);
         buttons.add(row);

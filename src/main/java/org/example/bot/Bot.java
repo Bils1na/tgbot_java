@@ -5,14 +5,18 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class Bot extends TelegramLongPollingBot {
-    private final ConfigBot config;
+    private static final ConfigBot config;
     private Storage storage;
     private Menu menu;
     private SendMessage answer;
     private Keyboard keyboards;
+
+    private static final Logger logger = LoggerFactory.getLogger(Bot.class);
 
 
     public Bot(){
@@ -56,13 +60,26 @@ public class Bot extends TelegramLongPollingBot {
     private void parseMessage(String text) {
         if (text.equals("/menu")) {
              answer.setText(menu.getMessage());
-             answer.setReplyMarkup(keyboards.getChatButtons());
+             answer.setReplyMarkup(keyboards.getMessageButtons());
         }   else if (text.equals("Вызвать меню")){
             answer.setText(menu.getMessage());
-            answer.setReplyMarkup(keyboards.getMessageButtons);
+            answer.setReplyMarkup(keyboards.getMessageButtons());
         } else {
             answer.setText("Error");
-            answer.setReplyMarkup(config.replyKeyboardMarkup);
+            answer.setReplyMarkup(keyboards.getChatButtons());
+        }
+    }
+
+    public boolean processTask(Task task) {
+        logger.debug("processTask id =" + task.getId());
+        try {
+            task.start();
+            task.progress();
+            task.complete();
+            return true;
+        } catch (Exception e) {
+            logger.error("Unknown error", e);
+            return false;
         }
     }
 
