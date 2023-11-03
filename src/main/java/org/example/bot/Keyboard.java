@@ -14,20 +14,20 @@ public class Keyboard {
     protected InlineKeyboardMarkup messageButtons;
 
     public Keyboard() {
-        this.initKeyboard();
+        this.initChatButtons();
         this.initMessageButtons();
     }
 
 
-    private void initCharButtons() {
+    private void initChatButtons() {
         chatButtons = new ReplyKeyboardMarkup();
         chatButtons.setResizeKeyboard(true); // подгоняем размер
-        chatButtons.setOneTimeKeyboard(true); //скрываем после использования
+        chatButtons.setOneTimeKeyboard(false); //скрываем после использования
 
         ArrayList<KeyboardRow> keyboardRows = new ArrayList<>();
         KeyboardRow keyboardRow = new KeyboardRow();
         keyboardRows.add(keyboardRow);
-        keyboardRow.add(new KeyboardButton("Вызвать меню"));
+        keyboardRow.add("Вызвать меню");
 
         chatButtons.setKeyboard(keyboardRows);
     }

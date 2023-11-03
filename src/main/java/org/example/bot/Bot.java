@@ -1,29 +1,26 @@
 package org.example.bot;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 public class Bot extends TelegramLongPollingBot {
-    private static final ConfigBot config;
+    private final Logger log = LoggerFactory.getLogger(Bot.class);
+    private  ConfigBot config;
     private Storage storage;
     private Menu menu;
     private SendMessage answer;
     private Keyboard keyboards;
 
-    private static final Logger logger = LoggerFactory.getLogger(Bot.class);
 
 
     public Bot(){
-        config = new ConfigBot(
-                "6541493813:AAHBa1UqjKh51UabBbvkFWGkYWKP2L8SKj4",
-                "DocTur"
-        );
+        config = new ConfigBot();
         storage = new Storage();
         menu = new Menu();
         keyboards = new Keyboard();
@@ -49,7 +46,7 @@ public class Bot extends TelegramLongPollingBot {
                 parseMessage(msg.getText());
 
                 answer.setChatId(chatId);
-
+                log.info("INFO");
                 execute(answer);
             }
         } catch (TelegramApiException e) {
@@ -59,9 +56,9 @@ public class Bot extends TelegramLongPollingBot {
 
     private void parseMessage(String text) {
         if (text.equals("/menu")) {
-             answer.setText(menu.getMessage());
-             answer.setReplyMarkup(keyboards.getMessageButtons());
-        }   else if (text.equals("Вызвать меню")){
+            answer.setText(menu.getMessage());
+            answer.setReplyMarkup(keyboards.getMessageButtons());
+        }  else if (text.equals("Вызвать меню")){
             answer.setText(menu.getMessage());
             answer.setReplyMarkup(keyboards.getMessageButtons());
         } else {
@@ -70,17 +67,17 @@ public class Bot extends TelegramLongPollingBot {
         }
     }
 
-    public boolean processTask(Task task) {
-        logger.debug("processTask id =" + task.getId());
-        try {
-            task.start();
-            task.progress();
-            task.complete();
-            return true;
-        } catch (Exception e) {
-            logger.error("Unknown error", e);
-            return false;
-        }
-    }
+//    public boolean processTask(Task task) {
+//        logger.debug("processTask id =" + task.getId());
+//        try {
+//            task.start();
+//            task.progress();
+//            task.complete();
+//            return true;
+//        } catch (Exception e) {
+//            logger.error("Unknown error", e);
+//            return false;
+//        }
+//    }
 
 }
