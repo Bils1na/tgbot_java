@@ -1,7 +1,5 @@
 package org.example.bot;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -10,7 +8,6 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 
 public class Bot extends TelegramLongPollingBot {
-    private final Logger log = LoggerFactory.getLogger(Bot.class);
     private  ConfigBot config;
     private Storage storage;
     private Menu menu;
@@ -46,7 +43,7 @@ public class Bot extends TelegramLongPollingBot {
                 parseMessage(msg.getText());
 
                 answer.setChatId(chatId);
-                log.info("INFO");
+
                 execute(answer);
             }
         } catch (TelegramApiException e) {
